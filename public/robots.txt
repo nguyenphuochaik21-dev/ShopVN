@@ -1,0 +1,12 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Disallow admin routes
+Disallow: /admin/
+
+# Sitemap
+Sitemap: https://www.shopvn.com/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
