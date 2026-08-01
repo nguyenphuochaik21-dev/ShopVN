@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Website bán hàng cá nhân hoàn chỉnh",
   "private": true,
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
