@@ -9,10 +9,10 @@ import { useCartStore } from '@/store/cart-store'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { cn, formatCurrency, calculateDiscount } from '@/lib/utils'
-import type { Product } from '@/types'
+import type { Product, ProductSummary } from '@/types'
 
 interface ProductCardProps {
-  product: Product
+  product: Product | ProductSummary
   className?: string
   layout?: 'grid' | 'list'
 }
@@ -86,7 +86,7 @@ export function ProductCard({ product, className, layout = 'grid' }: ProductCard
                 )}
               </div>
               <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
-                {product.description}
+                {'description' in product ? product.description : ''}
               </p>
             </div>
 

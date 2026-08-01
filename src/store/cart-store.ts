@@ -1,11 +1,11 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { Product, CartItemType } from '@/types'
+import type { Product, ProductSummary, CartItemType } from '@/types'
 
 interface CartStore {
   items: CartItemType[]
   isOpen: boolean
-  addItem: (product: Product, quantity?: number) => void
+  addItem: (product: Product | ProductSummary, quantity?: number) => void
   removeItem: (productId: string) => void
   updateQuantity: (productId: string, quantity: number) => void
   clearCart: () => void
@@ -27,7 +27,7 @@ export const useCartStore = create<CartStore>()(
       couponCode: null,
       discount: 0,
 
-      addItem: (product: Product, quantity = 1) => {
+      addItem: (product: Product | ProductSummary, quantity = 1) => {
         set((state) => {
           const existingItem = state.items.find(
             (item) => item.productId === product.id
@@ -51,7 +51,7 @@ export const useCartStore = create<CartStore>()(
                 userId: '',
                 productId: product.id,
                 quantity,
-                product,
+                product: product as Product,
               },
             ],
           }

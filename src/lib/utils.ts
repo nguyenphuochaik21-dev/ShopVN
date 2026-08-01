@@ -2,7 +2,6 @@ import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { formatDistanceToNow, format, parseISO } from 'date-fns'
 import { vi, enUS } from 'date-fns/locale'
-import { cubicBezier } from 'framer-motion'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -115,12 +114,6 @@ export function maskEmail(email: string) {
 export function maskPhone(phone: string) {
   if (phone.length < 10) return phone
   return phone.slice(0, 3) + '****' + phone.slice(-3)
-}
-
-export const ease = {
-  easeOut: cubicBezier(0.16, 1, 0.3, 1),
-  easeInOut: cubicBezier(0.65, 0, 0.35, 1),
-  spring: cubicBezier(0.34, 1.56, 0.64, 1),
 }
 
 export const ORDER_STATUS_COLORS: Record<string, { bg: string; text: string; icon: string }> = {

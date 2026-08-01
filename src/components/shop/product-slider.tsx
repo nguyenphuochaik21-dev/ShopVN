@@ -7,11 +7,11 @@ import useEmblaCarousel from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
 import { Button } from '@/components/ui/button'
 import { ProductCard } from './product-card'
-import type { Product } from '@/types'
+import type { ProductSummary } from '@/types'
 
 interface ProductSliderProps {
   title: string
-  products: Product[]
+  products: ProductSummary[]
   link?: string
   linkText?: string
 }

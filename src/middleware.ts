@@ -5,7 +5,9 @@ import type { NextRequest } from 'next/server'
 const rateLimit = new Map<string, { count: number; lastTime: number }>()
 
 export function middleware(request: NextRequest) {
-  const ip = request.ip || 'anonymous'
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0] ||
+             request.headers.get('x-real-ip') ||
+             'anonymous'
   const now = Date.now()
   const windowMs = 60 * 1000 // 1 minute
   const maxRequests = 60

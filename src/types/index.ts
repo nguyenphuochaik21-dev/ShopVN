@@ -51,6 +51,21 @@ export interface ProductAttribute {
   value: string
 }
 
+// Simplified product type for display components (cards, sliders)
+export interface ProductSummary {
+  id: string
+  name: string
+  slug: string
+  price: number
+  comparePrice: number | null
+  images: string[]
+  sold: number
+  averageRating?: number
+  reviewCount?: number
+  isFeatured: boolean
+  isFlashSale: boolean
+}
+
 export interface CartItemType {
   id: string
   userId: string
