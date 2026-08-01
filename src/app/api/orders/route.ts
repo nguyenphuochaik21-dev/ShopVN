@@ -18,7 +18,8 @@ export async function GET(request: NextRequest) {
     const where: Record<string, unknown> = {}
 
     // If not admin, only show user's orders
-    if ((session.user as { role?: string })?.role !== 'ADMIN') {
+    const userRole = (session.user as { role?: string })?.role
+    if (userRole !== 'ADMIN' && session.user?.id) {
       where.userId = session.user.id
     }
 
