@@ -1,5 +1,4 @@
 import { MetadataRoute } from 'next'
-import prisma from '@/lib/prisma'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
@@ -50,46 +49,52 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ]
 
-  // Get categories
-  const categories = await prisma.category.findMany({
-    select: {
-      slug: true,
-      updatedAt: true,
-    },
-    where: {
-      parentId: null,
-    },
-  })
+  // Try to get dynamic routes from database
+  try {
+    const { default: prisma } = await import('@/lib/prisma')
 
-  const categoryRoutes: MetadataRoute.Sitemap = categories.map((category) => ({
-    url: `${baseUrl}/category/${category.slug}`,
-    lastModified: category.updatedAt,
-    changeFrequency: 'weekly',
-    priority: 0.7,
-  }))
+    const categories = await prisma.category.findMany({
+      select: {
+        slug: true,
+        updatedAt: true,
+      },
+      where: {
+        parentId: null,
+      },
+    })
 
-  // Get products
-  const products = await prisma.product.findMany({
-    select: {
-      slug: true,
-      updatedAt: true,
-      isActive: true,
-    },
-    where: {
-      isActive: true,
-    },
-    take: 1000, // Limit for performance
-    orderBy: {
-      updatedAt: 'desc',
-    },
-  })
+    const categoryRoutes: MetadataRoute.Sitemap = categories.map((category) => ({
+      url: `${baseUrl}/category/${category.slug}`,
+      lastModified: category.updatedAt,
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    }))
 
-  const productRoutes: MetadataRoute.Sitemap = products.map((product) => ({
-    url: `${baseUrl}/products/${product.slug}`,
-    lastModified: product.updatedAt,
-    changeFrequency: 'weekly',
-    priority: 0.8,
-  }))
+    const products = await prisma.product.findMany({
+      select: {
+        slug: true,
+        updatedAt: true,
+        isActive: true,
+      },
+      where: {
+        isActive: true,
+      },
+      take: 1000,
+      orderBy: {
+        updatedAt: 'desc',
+      },
+    })
 
-  return [...staticRoutes, ...categoryRoutes, ...productRoutes]
+    const productRoutes: MetadataRoute.Sitemap = products.map((product) => ({
+      url: `${baseUrl}/products/${product.slug}`,
+      lastModified: product.updatedAt,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    }))
+
+    return [...staticRoutes, ...categoryRoutes, ...productRoutes]
+  } catch (error) {
+    console.warn('Sitemap: Could not fetch dynamic routes from database:', error)
+    return staticRoutes
+  }
 }

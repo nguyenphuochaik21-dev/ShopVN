@@ -157,7 +157,9 @@ export default function ProductsPage() {
         <section className="container mx-auto px-4 py-8">
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Filters */}
-            <ProductFilters className="mb-6 lg:mb-0" />
+            <Suspense fallback={<div className="hidden lg:block w-64 shrink-0 border rounded-lg p-4 h-96 animate-pulse bg-muted" />}>
+              <ProductFilters className="mb-6 lg:mb-0" />
+            </Suspense>
 
             {/* Products */}
             <div className="flex-1">
